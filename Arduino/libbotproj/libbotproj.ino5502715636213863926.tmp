@@ -1,0 +1,149 @@
+#include <Servo.h> 
+ 
+//Servo myservo1;  // create servo object to control a servo 
+//Servo myservo2;
+//Servo myservo3;
+Servo myservo10;
+Servo myservo5;
+//Servo myservo6;
+//int x=0;
+//int incomdata[1000];   // for incoming serial data
+//int y=0;
+//int z=0;
+void setup() 
+{ pinMode(1,OUTPUT);//ir sensor at the beginning
+  pinMode(2,OUTPUT);//ir sensor at the stack
+  //pinMode(8,OUTPUT);
+  //while(x<=1000)
+ //{incomdata[x]=0;
+ //x++;}
+  //Serial.begin(9600);     // opens serial port, sets data rate to 9600 bps
+  //myservo1.attach(2);  // row wise movement servo
+  //myservo3.attach(3);  //colum wise 
+  myservo10.attach(10);  //bottom of arm
+  myservo5.attach(5);  //joint of arm
+  //myservo5.attach(6);  //taking book..locking arm
+  //myservo7.attach(7);  //hook
+  int irsensor = A0;
+pinMode(13,INPUT);
+} 
+ 
+void loop() 
+{
+  int ir;
+  char stackpos;
+         while(Serial.available() > 0) 
+         {
+           digitalWrite(2,HIGH);
+           ir=analogRead(13);
+             while(1)
+             {
+               if(ir>500) 
+             {
+               pinMode(8,HIGH);
+               pinMode(9,LOW);
+               pinMode(10,HIGH);
+               pinMode(11,LOW);
+             
+           }
+             else
+             {
+               pinMode(8,LOW);
+               pinMode(9,LOW);
+               pinMode(10,LOW);
+               pinMode(11,LOW);
+               break;
+             }
+             }
+             digitalWrite(2,LOW);
+             stackpos=Serial.read();
+             if(stackpos=='l')
+             {
+               /*pinMode(8,HIGH);
+               pinMode(9,LOW);
+               pinMode(10,HIGH);
+               pinMode(11,LOW);
+               %turnleft*/
+           delay(4000);  
+           }
+           else
+           {
+             /*pinMode(8,HIGH);
+               pinMode(9,LOW);
+               pinMode(10,HIGH);
+               pinMode(11,LOW);
+               %turnright*/
+               delay(4000);
+           }
+           Serial.flush();
+                // read the incoming byte:
+                while(1)
+                {
+                char incomdata = Serial.read();
+                if(incomdata=='a')
+                {
+                  
+              /*myservo5.write(0);                                // goes from 0 degrees to 180 degrees 
+              delay(15);
+              myservo10.write(150);              // in steps of 1 degree 
+              delay(15);*/
+                }
+                else if(incomdata=='b')
+                {
+                  //move correponding number of columns
+                }
+                else
+                {
+                  Serial.flush();
+                  break;
+                }
+                }
+                Serial.print('y');
+                Serial.flush();
+                char arm;
+                while(1)
+                {
+                  arm=Serial.read();
+                if(arm=='g')
+                {
+                  //keep on moving the arm towards required book the mechanism
+                }
+                else if(arm=='s')
+                {
+                  //stop moving andd use the arm to pick the book
+              break;  
+              }
+                else
+                {
+                  Serial.flush();
+                }
+                }
+                
+                            
+}
+digitalWrite(2,HIGH);
+if(ir>500)   //after taking book reactivate the stack sensor
+{
+  //keep moving backwards
+}
+else
+{
+  //turn opposite direction of previous,then stops
+}
+digitalWrite(2,LOW);
+delay(1000);
+digitalWrite(1,HIGH);
+//activate the sensor at the beginning
+if(ir>500)
+{
+  //move towards beginning
+}
+else
+{
+  //stop and deliver the book
+}
+digitalWrite(1,LOW);
+}
+
+
+
